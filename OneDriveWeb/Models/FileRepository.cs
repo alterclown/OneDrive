@@ -1,6 +1,7 @@
 ﻿using Microsoft.Graph;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using OneDriveWeb.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -11,15 +12,20 @@ namespace OneDriveWeb.Models
 {
     public class FileRepository
     {
-        private async Task<string> GetGraphAccessTokenAsync() {
+        private async Task<string> GetGraphAccessTokenAsync()
+        {
             var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
             var userObjectId = ClaimsPrincipal.Current.FindFirst(SettingsHelper.ClaimTypeObjectIdentifier).Value;
+
             var clientCredential = new ClientCredential(SettingsHelper.ClientId, SettingsHelper.ClientSecret);
-            var userIdentifier = new UserIdentifier(userObjectId,UserIdentifierType.UniqueId);
+            var userIdentifier = new UserIdentifier(userObjectId, UserIdentifierType.UniqueId);
+
             AuthenticationContext authContext = new AuthenticationContext(SettingsHelper.AzureAdAuthority, new ADALTokenCache(signInUserId));
             var result = await authContext.AcquireTokenSilentAsync(SettingsHelper.AzureAdGraphResourceURL, clientCredential, userIdentifier);
+
             return result.AccessToken;
         }
+
         private async Task<GraphServiceClient> GetGraphServiceAsync() {
             var accessToken = await GetGraphAccessTokenAsync();
             var graphserviceClient = new GraphServiceClient(SettingsHelper.GraphResourceUrl, new DelegateAuthenticationProvider(
@@ -38,8 +44,8 @@ namespace OneDriveWeb.Models
                 return requestFiles.CurrentPage.OrderBy(i => i.Name).Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
             }
-            catch {
-                throw;
+            catch(Exception ex) {
+                throw ex;
             }
         }
 

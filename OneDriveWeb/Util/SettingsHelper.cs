@@ -26,14 +26,14 @@ namespace OneDriveWeb.Util
         {
             get
             {
-                return ConfigurationManager.AppSettings["ida:AzureAdInstance"];
+                return ConfigurationManager.AppSettings["ida:AADInstance"];
             }
         }
         public static string AzureAdTenantId
         {
             get
             {
-                return ConfigurationManager.AppSettings["ida:AzureAdTenantId"];
+                return ConfigurationManager.AppSettings["ida:TenantId"];
             }
         }
         public static string GraphResourceUrl
@@ -46,10 +46,7 @@ namespace OneDriveWeb.Util
         }
         public static string AzureAdAuthority
         {
-            get
-            {
-                return AzureAdInstance + AzureAdTenantId;
-            }
+            get { return AzureAdInstance + AzureAdTenantId; }
         }
         public static string ClaimTypeObjectIdentifier
         {
