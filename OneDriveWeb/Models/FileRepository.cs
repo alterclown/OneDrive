@@ -36,15 +36,18 @@ namespace OneDriveWeb.Models
                }));
             return graphserviceClient;
         }
-        public async Task<List<DriveItem>> GetMyFiles(int pageIndex, int pageSize) {
+        public async Task<List<DriveItem>> GetMyFiles(int pageIndex, int pageSize)
+        {
             try
             {
                 var graphServiceClient = await GetGraphServiceAsync();
-                var requestFiles = await graphServiceClient.Me.Drive.Root.Children.Request().GetAsync();
-                return requestFiles.CurrentPage.OrderBy(i => i.Name).Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
+                var requestFiles = await graphServiceClient.Me.Drive.Root.Children.Request().GetAsync();
+
+                return requestFiles.CurrentPage.OrderBy(i => i.Name).Skip(pageIndex * pageSize).Take(pageSize).ToList();
             }
-            catch(Exception ex) {
+            catch(Exception ex)
+            {
                 throw ex;
             }
         }

@@ -22,7 +22,7 @@ namespace OneDriveWeb.Controllers
         private string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
         private string appKey = ConfigurationManager.AppSettings["ida:ClientSecret"];
         private string aadInstance = EnsureTrailingSlash(ConfigurationManager.AppSettings["ida:AADInstance"]);
-        private string graphResourceID = "https://graph.windows.net";
+        private string graphResourceID = "https://graph.microsoft.com";
 
         // GET: UserProfile
         public async Task<ActionResult> Index()
